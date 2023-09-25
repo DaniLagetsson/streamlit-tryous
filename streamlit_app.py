@@ -25,7 +25,7 @@ fl = st.file_uploader(":file_folder: Upload a file", type=(["csv"]))
 if fl is not None:
     filename = fl.name
     st.write(filename)
-    df = pd.read_csv(filename, sep=";")
+    df = pd.read_csv(fl, sep=";")
 else:
     # os.chdir("C:/Users/u1129253/Downloads")
     df = pd.read_csv(fileGit, sep=";")
