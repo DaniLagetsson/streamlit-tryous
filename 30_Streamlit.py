@@ -10,9 +10,9 @@ import warnings
 import glob
 warnings.filterwarnings('ignore')
 
-ruta = 'C:/Users/u1129253/Downloads/'
-list_of_files = glob.glob(ruta+"consumo_periodo*.csv") # * means all if need specific format then *.csv
-latest_file = max(list_of_files, key=os.path.getctime)
+# ruta = 'C:/Users/u1129253/Downloads/'
+# list_of_files = glob.glob(ruta+"consumo_periodo*.csv") # * means all if need specific format then *.csv
+# latest_file = max(list_of_files, key=os.path.getctime)
 
 st.set_page_config(page_title="Factura de la luz", page_icon=":memo:", layout="wide") #Para la pestaña del navegador
 
@@ -24,9 +24,9 @@ if fl is not None:
     filename = fl.name
     st.write(filename)
     df = pd.read_csv(filename, sep=";")
-else:
-    # os.chdir("C:/Users/u1129253/Downloads")
-    df = pd.read_csv(latest_file, sep=";")
+# else:
+#     # os.chdir("C:/Users/u1129253/Downloads")
+#     df = pd.read_csv(latest_file, sep=";")
 
 col1, col2 = st.columns((2))
 
