@@ -21,7 +21,7 @@ st.set_page_config(page_title="Factura de la luz", page_icon=":memo:", layout="w
 st.title(" :memo: Factura de la luz") #El título de la página
 st.markdown('<style>div.block-containe{pagging-top;1rem;}</style>',unsafe_allow_html = True)
 
-fl = st.file_uploader(":file_folder: Upload a file", type=(["csv"]))
+fl = st.file_uploader(":file_folder: Carga tus consumos", type=(["csv"]))
 if fl is not None:
     filename = fl.name
     st.write(filename)
@@ -29,6 +29,8 @@ if fl is not None:
 else:
     # os.chdir("C:/Users/u1129253/Downloads")
     df = pd.read_csv(fileGit, sep=";")
+
+st.write("El csv debe tener las siguientes columnas: Fecha (en formato dd/mm/yyyy), Consumo_kWh (en kwh) y Hora (de 1 a 24)")
 
 col1, col2 = st.columns((2))
 
@@ -55,7 +57,7 @@ st.sidebar.header("Rellena las características de tu contrato: ")
 coste_kwh = st.sidebar.text_input("¿Cuál es el coste del kwH en €? Por defecto 0.1299")
 coste_pot = st.sidebar.text_input("¿Cuál es el coste de la potencia total en €? Por defecto 0.122308")
 pot_contr = st.sidebar.text_input("¿Cuál es tu potencia contratada en Kw? Por defecto 3")
-IVA = st.sidebar.selectbox("¿Cuál es el IVA vigente para la electricidad?", ["0%","4%","5%","10%","21%"])
+IVA = st.sidebar.selectbox("¿Cuál es el IVA vigente para la electricidad?", ["5%","10%","21%"])
 
 
 # hour = st.sidebar.multiselect("Selecciona una hora", df["Hora"].unique())
@@ -95,7 +97,7 @@ total_energia_libre = (energia_cons_libre+potencia_cons_libre+financ_bs)*(1+imp_
 coste_equipo = alq_equipo*dias
 total_factura_libre = round((total_energia_libre+coste_equipo)*(1+IVA),2)
 
-st.write(f" :euro: La factura para el período seleccionado es de {total_factura_libre} € :euro:")
+st.header(f" :euro: La factura para el período seleccionado es de {total_factura_libre} € :euro:")
 
 consumo_df = df.groupby(by = ["Fecha"],as_index=False)["Consumo_kWh"].sum()
 
