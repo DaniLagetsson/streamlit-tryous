@@ -1,5 +1,5 @@
 # Correr la siguiente línea en la terminal para lanzar la app
-# streamlit run .\30_Streamlit.py --server.port 8888
+# streamlit run .\streamlit_app.py --server.port 8888
 
 import streamlit as st
 import pandas as pd
@@ -51,28 +51,42 @@ df = df[(df["Fecha"]>=date1)&(df["Fecha"]<=date2)].copy()
 
 fechas = pd.DatetimeIndex(df['Fecha'].unique())
 
-# st.sidebar.header("Elige tu filtro: ")
-# fecha = st.sidebar.multiselect("Selecciona una fecha", fechas)
-# hour = st.sidebar.multiselect("Selecciona una hora", df["Hora"].unique())
-# if not fecha:
-#     df2 = df.copy()
-# else:
-#     df2 = df[df["Fecha"].isin(fecha)]
+st.sidebar.header("Rellena las características de tu contrato: ")
+coste_kwh = st.sidebar.text_input("¿Cuál es el coste del kwH en €? Por defecto 0.1299")
+coste_pot = st.sidebar.text_input("¿Cuál es el coste de la potencia total en €? Por defecto 0.122308")
+pot_contr = st.sidebar.text_input("¿Cuál es tu potencia contratada en Kw? Por defecto 3")
+IVA = st.sidebar.selectbox("¿Cuál es el IVA vigente para la electricidad?", ["0%","4%","5%","10%","21%"])
 
-# if not hour:
-#     df3 = df2.copy()
-# else:
-#     df3 = df2[df2["Fecha"].isin(fecha)]
+
+# hour = st.sidebar.multiselect("Selecciona una hora", df["Hora"].unique())
 
 # Cálculo de la factura
 
-coste_kwh = 0.1299
-coste_pot = 0.122308
-pot_contr = 3
+if not coste_kwh:
+    coste_kwh = 0.1299
+else:
+    coste_kwh = coste_kwh.replace(",",".")
+    coste_kwh = float(coste_kwh)
+if not coste_pot:
+    coste_pot = 0.122308
+else:
+    coste_pot = coste_pot.replace(",",".")
+    coste_pot = float(coste_pot)
+if not pot_contr:
+    pot_contr = 3
+else:
+    pot_contr = pot_contr.replace(",",".")
+    pot_contr = float(pot_contr)
 alq_equipo = 0.02688
 cargo_bono_social = 0.03846
 imp_elec = 0.005
-IVA = 0.05
+if not IVA:
+    IVA = 0.05
+else:
+    IVA = IVA.replace(",",".")
+    IVA = IVA.replace("%","")
+    IVA = float(IVA)
+    IVA = IVA/100
 dias = len(df.Fecha.unique())
 energia_cons_libre = df["Consumo_kWh"].sum()*coste_kwh
 potencia_cons_libre = dias*pot_contr*coste_pot
