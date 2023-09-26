@@ -1,6 +1,5 @@
 plotly
 matplotlib
-numpy_financial
 time
 datetime
 dateutil.relativedelta
